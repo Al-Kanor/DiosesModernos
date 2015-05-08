@@ -12,6 +12,11 @@ namespace DiosesModernos {
             set { _color = value; }
         }
 
+        public GameObject unit {
+            get { return _unit; }
+            set { _unit = value; }
+        }
+
         public int x {
             get { return (int)transform.position.x; }
         }
@@ -23,6 +28,7 @@ namespace DiosesModernos {
 
         #region Private properties
         string _color = "grey";
+        GameObject _unit = null;
         #endregion
     }
 }

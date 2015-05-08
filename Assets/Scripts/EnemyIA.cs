@@ -5,6 +5,12 @@ namespace DiosesModernos {
     public class EnemyIA : Cyborg {
         #region API
         public void PlayTurn () {
+            for (int i = 0; i < activeSkills.Length; ++i) {
+                if (energy >= activeSkills[i].cost) {
+                    StartCoroutine (UseSkill (i));
+                    return;
+                }
+            }
             Grid grid = GameManager.instance.grid;
             Tile tile = null;
             Vector2 pos = Vector2.zero;
@@ -13,17 +19,6 @@ namespace DiosesModernos {
                 grid.tiles.TryGetValue (pos, out tile);
             } while (null == tile || "grey" != tile.color);
             GameManager.instance.EnemyIAClick (pos);
-
-            /*for (int x = -grid.nbColumns / 2; x <= grid.nbColumns / 2; ++x) {
-                for (int y = -grid.nbLines / 2; y <= grid.nbLines / 2; ++y) {
-                    Vector2 pos = new Vector2 (x, y);
-                    grid.tiles.TryGetValue (pos, out tile);
-                    if (null != tile && "grey" == tile.color) {
-                        GameManager.instance.EnemyIAClick (pos);
-                        return;
-                    }
-                }
-            }*/
         }
         #endregion
     }

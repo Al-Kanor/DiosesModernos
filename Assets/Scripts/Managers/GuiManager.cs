@@ -16,6 +16,14 @@ namespace DiosesModernos {
         [SerializeField]
         Image _c2PanelImage;
         [SerializeField]
+        Image _c1PassiveIcon;
+        [SerializeField]
+        Image _c2PassiveIcon;
+        [SerializeField]
+        Text _c1PassiveCountdown;
+        [SerializeField]
+        Text _c2PassiveCountdown;
+        [SerializeField]
         Image _c1HealthBar;
         [SerializeField]
         Image _c2HealthBar;
@@ -51,7 +59,7 @@ namespace DiosesModernos {
         public void UpdateActiveSkills () {
             Player p = GameManager.instance.player;
             for (int i = 0; i < _c1Buttons.Length; ++i) {
-                _c1Buttons[i].GetComponentInChildren<Text> ().text = p.activeSkills[i].name;
+                _c1Buttons[i].GetComponentInChildren<Text> ().text = p.activeSkills[i].name + " ("+ p.activeSkills[i].cost + ")";
                 _c1Buttons[i].interactable = p.energy >= p.activeSkills[i].cost;
             }
         }
@@ -63,14 +71,24 @@ namespace DiosesModernos {
         public void UpdateHealthBar (Cyborg c) {
             StartCoroutine (LerpHealthBar (c));
         }
+
+        public void UpdatePassive (Cyborg c) {
+            Image passiveIcon = c == GameManager.instance.player ? _c1PassiveIcon : _c2PassiveIcon;
+            if (Cyborg.Passive.NO_PASSIVE == c.passive || 0 == c.passiveCountdown) {
+                passiveIcon.gameObject.SetActive (false);
+            }
+            else {
+                passiveIcon.gameObject.SetActive (true);
+                Text passiveCountdown = c == GameManager.instance.player ? _c1PassiveCountdown : _c2PassiveCountdown;
+                passiveCountdown.text = c.passiveCountdown.ToString ();
+            }
+        }
         #endregion
 
         #region Private methods
         IEnumerator LerpEnergyBar (Cyborg c) {
-            //Image energyBar = !(GameManager.instance.isPlayerTurn ^ activePlayer) ? _c1EnergyBar : _c2EnergyBar;
             Image energyBar = c == GameManager.instance.player ? _c1EnergyBar : _c2EnergyBar;
-            //Cyborg c = activePlayer ? GameManager.instance.activeCyborg : GameManager.instance.nonActiveCyborg;
-            float ratio = _c1EnergyFrame.rectTransform.sizeDelta.x / 10;
+            float ratio = _c1EnergyFrame.rectTransform.sizeDelta.x / c.energyMax;
             do {
                 float w = c.energy * ratio;
                 energyBar.rectTransform.anchoredPosition = Vector2.Lerp (
@@ -89,10 +107,8 @@ namespace DiosesModernos {
         }
 
         IEnumerator LerpHealthBar (Cyborg c) {
-            //Image healthBar = !(GameManager.instance.isPlayerTurn ^ activePlayer) ? _c1HealthBar : _c2HealthBar;
             Image healthBar = c == GameManager.instance.player ? _c1HealthBar : _c2HealthBar;
-            //Cyborg c = activePlayer ? GameManager.instance.activeCyborg : GameManager.instance.nonActiveCyborg;
-            float ratio = _c1HealthFrame.rectTransform.sizeDelta.x / 10;
+            float ratio = _c1HealthFrame.rectTransform.sizeDelta.x / c.healthMax;
             do {
                 float w = c.health * ratio;
                 healthBar.rectTransform.anchoredPosition = Vector2.Lerp (

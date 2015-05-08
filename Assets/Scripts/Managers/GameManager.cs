@@ -72,6 +72,9 @@ namespace DiosesModernos {
                 _nonActiveCyborg = _player;
                 _enemyIA.PlayTurn ();
             }
+            if (1 == _activeCyborg.passiveCountdown) _activeCyborg.passive = Cyborg.Passive.NO_PASSIVE;
+            _activeCyborg.passiveCountdown = Mathf.Max (0, _activeCyborg.passiveCountdown - 1);
+            GuiManager.instance.UpdatePassive (_activeCyborg);
             GuiManager.instance.NewTurn ();
         }
 
@@ -95,7 +98,7 @@ namespace DiosesModernos {
 
         #region Unity
         void Start () {
-            _player.id = "zakk";
+            _player.id = "bryven";
             _enemyIA.id = "zakk";
             _isPlayerTurn = true;
             if (_isPlayerTurn) {

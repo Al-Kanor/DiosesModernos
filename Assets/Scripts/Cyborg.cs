@@ -3,6 +3,18 @@ using System.Collections;
 
 namespace DiosesModernos {
     public class Cyborg : MonoBehaviour {
+        #region Public enums
+        public enum Passive {
+            NO_PASSIVE,
+            BURN,
+            ICED,
+            INVULNERABLE,
+            MINE_INVULNERABLE,
+            PARALIZED,
+            POISONED
+        };
+        #endregion
+
         #region Getters
         public Skill[] activeSkills {
             get { return _activeSkills; }
@@ -16,6 +28,14 @@ namespace DiosesModernos {
             }
         }
 
+        public int energyMax {
+            get { return _energyMax; }
+            set {
+                _energyMax = Mathf.Max (1, value);
+                GuiManager.instance.UpdateEnergyBar (this);
+            }
+        }
+
         public int health {
             get { return _health; }
             set {
@@ -25,9 +45,27 @@ namespace DiosesModernos {
             }
         }
 
+        public int healthMax {
+            get { return _healthMax; }
+            set {
+                _healthMax = Mathf.Max (1, value);
+                GuiManager.instance.UpdateHealthBar (this);
+            }
+        }
+
         public string id {
             get { return _id; }
             set { _id = value; }
+        }
+
+        public Passive passive {
+            get { return _passive; }
+            set { _passive = value; }
+        }
+
+        public int passiveCountdown {
+            get { return _passiveCountdown; }
+            set { _passiveCountdown = value; }
         }
 
         public ArrayList skills {
@@ -69,6 +107,8 @@ namespace DiosesModernos {
         int _energyMax = 10;
         protected ArrayList _skills;
         Skill[] _activeSkills;
+        Passive _passive = Passive.NO_PASSIVE;
+        int _passiveCountdown;
         #endregion
 
         #region Private methods

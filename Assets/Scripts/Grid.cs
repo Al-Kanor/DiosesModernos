@@ -40,10 +40,6 @@ namespace DiosesModernos {
         #endregion
 
         #region Getters
-        /*public bool isInteractive {
-            get { return _isInteractive; }
-        }*/
-
         public int nbColumns {
             get { return _nbColumns; }
         }
@@ -59,6 +55,17 @@ namespace DiosesModernos {
         #endregion
 
         #region API
+        public Tile GetRandomTileByColor (string color, bool mustBeEmpty = false) {
+            if (0 == NbTilesByColor (color) || mustBeEmpty && 0 == NbEmptyTiles ("grey")) return null;
+            Tile tile = null;
+            Vector2 pos = Vector2.zero;
+            do {
+                pos = new Vector2 (Random.Range ((int)(-nbColumns / 2), (int)(nbColumns / 2) + 1), Random.Range ((int)(-nbLines / 2), (int)(nbLines / 2) + 1));
+                tiles.TryGetValue (pos, out tile);
+            } while (null == tile || color != tile.color || mustBeEmpty && null != tile.unit);
+            return tile;
+        }
+
         public IEnumerator MergeTilesCoroutine (Tile currentTile) {
             do {
                 yield return new WaitForSeconds (1);
@@ -67,16 +74,55 @@ namespace DiosesModernos {
             GameManager.instance.NewTurn ();
         }
 
+        // Return the number of tiles that have no unit on them. If a color is specified, only check the tiles of this color
+        public int NbEmptyTiles (string color = "") {
+            int n = 0;
+            for (int x = -_nbColumns / 2; x <= _nbColumns / 2; ++x) {
+                for (int y = -_nbLines / 2; y <= _nbLines / 2; ++y) {
+                    Tile tile;
+                    tiles.TryGetValue (new Vector2 (x, y), out tile);
+                    if (null != tile && null == tile.unit && ("" == color || tile.color == color)) n++;
+                }
+            }
+            return n;
+        }
+
         public int NbTilesByColor (string color) {
             int n = 0;
             for (int x = -_nbColumns / 2; x <= _nbColumns / 2; ++x) {
                 for (int y = -_nbLines / 2; y <= _nbLines / 2; ++y) {
                     Tile tile;
                     tiles.TryGetValue (new Vector2 (x, y), out tile);
-                    if (tile.color == color) n++;
+                    if (null != tile && tile.color == color) n++;
                 }
             }
             return n;
+        }
+
+        public int NbTilesByUnit (string unitName) {
+            int n = 0;
+            for (int x = -_nbColumns / 2; x <= _nbColumns / 2; ++x) {
+                for (int y = -_nbLines / 2; y <= _nbLines / 2; ++y) {
+                    Tile tile;
+                    tiles.TryGetValue (new Vector2 (x, y), out tile);
+                    if (null != tile && null != tile.unit && unitName == tile.unit.name) n++;
+                }
+            }
+            return n;
+        }
+
+        // Remove all units on the tiles. If a color is specified, only remove units on tiles of the specified color
+        public void RemoveUnits (string color = "") {
+            for (int x = -_nbColumns / 2; x <= _nbColumns / 2; ++x) {
+                for (int y = -_nbLines / 2; y <= _nbLines / 2; ++y) {
+                    Tile tile;
+                    tiles.TryGetValue (new Vector2 (x, y), out tile);
+                    if (null != tile && null != tile.unit && ("" == color || color == tile.color)) {
+                        tile.unit.Recycle ();
+                        tile.unit = null;
+                    }
+                }
+            }
         }
 
         public void ResetRandomTile (string color = "grey") {
@@ -126,6 +172,9 @@ namespace DiosesModernos {
                 Material newMaterial = null;
                 string color = null;
                 int rnd = Random.Range (0, 3);
+                // Hack/
+                //rnd = 1;
+                // /Hack
                 switch (rnd) {
                     case 0:
                         newMaterial = _redTileMaterial;
@@ -147,6 +196,18 @@ namespace DiosesModernos {
                         break;
                 }
                 tile.modelRenderer.material = newMaterial;
+                // Skill : mine
+                if (null != tile.unit && "Mine" == tile.unit.name) {
+                    string log = "Mine revealed ! ";
+                    tile.unit.SetActive (true);
+                    Cyborg active = GameManager.instance.activeCyborg;
+                    if (Cyborg.Passive.MINE_INVULNERABLE != active.passive) {
+                        log += active.name + " take 5 damage !";
+                        active.health -= 5;
+                    }
+                    else log += active.name + " is invulnerable to the mines !";
+                    GuiManager.instance.Log (log);
+                }
             }
             else tile = null;
             return tile;
@@ -184,6 +245,10 @@ namespace DiosesModernos {
                         tiles.TryGetValue (new Vector2 (x, y), out tile);
                         tile.color = "grey";
                         tile.modelRenderer.material = _greyTileMaterial;
+                        if (null != tile.unit) {
+                            tile.unit.Recycle ();
+                            tile.unit = null;
+                        }
                     }
                 }
                 return;
