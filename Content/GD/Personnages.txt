@@ -1,0 +1,25 @@
+Dioses Modernos - Personnages possibles
+
+- Bombardier
+	- Place des mines sur le terrain (cases grises)
+	- Celui qui se prend une mine prend des dégats
+	- Skill pour s'immuniser aux mines
+	- Skill pour faire exploser les mines déjà activées (donc visibles sur le terrain)
+	- Skill pour s'armurer
+	
+- Dresseur
+	- Invoque des animaux cyborgs sur les cases vertes
+	- Les [...] cyborgs infligent des dégats à chaque tour
+	- Les [...] cyborgs soignent à chaque tour
+
+- Magnat
+	- Place des bâtiments
+	- Bâtiments énergétiques : fournissent de l'énergie à chaque tour
+	- Les autres bâtiments consomment de l'énergie à chaque tour
+	
+- Manipulateur / Doppleganger
+	- Joue sur les skills adverse, peut en annuler, en contrer ou en voler
+	- Skill pour prendre l'apparence d'un autre personnage aléatoire pendant X tours et peut jouer les skills de ce personnage
+	
+- Mercenaire (cyborg)
+	- Skills pour améliorer son corps, profitant ainsi de bonus de dégats et de régénération

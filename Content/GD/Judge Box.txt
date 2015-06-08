@@ -1,0 +1,13 @@
+Dioses Modernos - Judge Box
+
+Les combats se déroulent dans la judge box : le sol est constitué de la fameuse grille de jeu
+Le combat est surveillé par un juge
+Ce juge peut imposer une règle (par exemple : interdiction d'utiliser des invocations)
+Si un joueur transgresse une règle, il subira la "Sentence de la Justice"
+La "Sentence de la Justice" se déroule comme suit :
+Une liste de 3 sentences aléatoires s'affiche et un curseur automatique les parcourt et s'arrête sur une au hasard (cf attaque de bowser dans Mario Party)
+La sentence est alors appliquée et la partie continue
+Une sentence peut être par exemple une attaque du juge (dégats directs), une purge d'énergie ou un soin de l'adversaire
+Une sentence spéciale (mode solo uniquement) consiste à affronter le juge en personne à la place de l'adversaire. Le juge a alors une forme du même niveau que le joueur (ex si le joueur est au stade cyborg le juge le sera aussi) et la jeuge de "métallisation" aussi remplie (pour éviter les stratégies du style "dès que ma jauge est quasi remplie j'appelle le juge puis je me transforme et je l'explose). Le juge est un adversaire coriace.
+Cette sentence ne fait pas partie de la liste des sentences aléatoires mais s'active automatiquement lorsque le joueur transgret les règles 3 fois (cette sentence arrive donc à la place de la 3ème)
+Si le joueur perd face au juge, il perd le combat. Si le joueur gagne, la partie reprend avec l'adversaire précédent et aucune règle de juge n'est imposée jusqu'à la fin du combat. Les points de vie et autres changements d'état ne sont pas restaurés, le joueur reprend le combat dans l'état où l'a laissé le juge.

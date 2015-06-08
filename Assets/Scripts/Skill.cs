@@ -54,16 +54,20 @@ namespace DiosesModernos {
                     inactive.health -= grid.NbTilesByColor ("red");
                     break;
                 case "forestFire":
-                    grid.RemoveUnits ("yellow");
+                    grid.RemoveUnits ("green");
                     break;
                 case "mine":
                     Tile tile = grid.GetRandomTileByColor ("grey", true);
-                    GuiManager.instance.Log (active.name + " places a mine under a random grey tile !");
-                    //Debug.Log ("Mine on " + tile.x + ", " + tile.y);
-                    Debug.Log (tile.gameObject.name);
-                    tile.unit = ObjectPool.Spawn (sm.minePrefab, tile.transform, Vector2.zero);
-                    tile.unit.name = "Mine";
-                    tile.unit.SetActive (false);
+                    if (null != tile) {
+                        GuiManager.instance.Log (active.name + " places a mine under a random grey tile !");
+                        Debug.Log (tile.gameObject.name);
+                        tile.unit = ObjectPool.Spawn (sm.minePrefab, tile.transform, Vector2.zero);
+                        tile.unit.name = "Mine";
+                        tile.unit.SetActive (false);
+                    }
+                    else {
+                        GuiManager.instance.Log ("There is no empty grey tile !");
+                    }
                     break;
                 case "reactivation":
                     inactive.health -= grid.NbTilesByUnit ("Mine");

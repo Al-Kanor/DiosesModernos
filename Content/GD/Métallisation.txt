@@ -1,0 +1,14 @@
+Dioses Modernos - Transformations
+
+Les persos ont tous 3 niveaux de transformation :
+Humain
+Cyborg
+Machine (robot)
+
+Les cases bleues ne soignent plus mais remplissent la jauge de "métallisation". Lorsqu'elle est remplie, le joueur passe automatiquement au niveau supérieur.
+Caractéristiques d'une évolution :
+- Nouvelles skills à la place des anciennes
+- Effet ponctuel au moment de la transformation (qui pour certains persos peut être boosté par la forme précédente, ex un bombardier pourrait poser des mines qui exploseront quand il deviendra cyborg)
+- Remise à zéro de la jauge de "métallisation" au moment de la transformation
+
+Si un joueur remplit sa jauge de "métallisation" alors qu'il est au stage Machine, un effet "ultime" sera alors effectué et la jauge se videra
